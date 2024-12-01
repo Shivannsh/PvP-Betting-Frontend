@@ -24,7 +24,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
     const script = document.createElement('script');
     script.src = 'https://s3.tradingview.com/tv.js';
     script.async = true;
-    script.onload = () => {
+    script.onload = (ev) => {
       if (typeof window.TradingView !== 'undefined' && container.current) {
         if (widgetRef.current) {
           container.current.innerHTML = '';
@@ -51,7 +51,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
     if (!document.querySelector(`script[src="${script.src}"]`)) {
       document.head.appendChild(script);
     } else {
-      script.onload?.();
+      script.onload?.(new Event('load'));
     }
 
     return () => {
