@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { useAccount } from 'wagmi'
+import { useAccount, useContractWrite } from 'wagmi'
+import {abi} from '../helpers/abi' // Import your contract ABI
+import CONTRACT_ADDRESS from '../helpers/deployed_address' // Import your contract address
+import {USDC_ABI} from '../helpers/usdc_abi' // Import USDC ABI
+import USDC_ADDRESS from '../helpers/usdc_address' // Import USDC contract address
 
 interface CreateTradeFormProps {
   onSubmit: (data: TradeFormData) => void
@@ -16,12 +20,13 @@ export interface TradeFormData {
 }
 
 const SUPPORTED_ASSETS = [
-  { id: 'BTC', name: 'Bitcoin' },
-  { id: 'ETH', name: 'Ethereum' },
-  { id: 'MATIC', name: 'Polygon' },
+  { id: 'BTC', name: 'Bitcoin',address :'0x0FB99723Aee6f420beAD13e6bBB79b7E6F034298' },
+  { id: 'ETH', name: 'Ethereum',address: '0x4aDC67696bA383F43DD60A9e78F2C97Fbbfc7cb1' }
 ]
 
 const DURATIONS = [
+  { value: 1, label: '1 minute' },
+  { value: 2, label: '2 minutes' },
   { value: 5, label: '5 minutes' },
   { value: 15, label: '15 minutes' },
   { value: 60, label: '1 hour' },
@@ -37,7 +42,29 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
     duration: 5,
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const selectedAsset = SUPPORTED_ASSETS.find(asset => asset.id === formData.asset);
+
+  const { write: createBetOrder } = useContractWrite({
+    address: CONTRACT_ADDRESS,
+    abi: abi,
+    functionName: 'createBetOrder',
+    args: [
+      selectedAsset?.address, // Use the selected asset's address
+      formData.amount * Math.pow(10, 6),
+      formData.pricePrediction * Math.pow(10, 6),
+      formData.direction,
+      formData.duration * 60,
+    ],
+  })
+
+  const { write: approveUSDC } = useContractWrite({
+    address: USDC_ADDRESS,
+    abi: USDC_ABI,
+    functionName: 'approve',
+    args: [CONTRACT_ADDRESS, formData.amount * Math.pow(10, 6)], // Approve the contract to spend USDC
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!isConnected) {
@@ -50,7 +77,27 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
       return
     }
 
-    onSubmit(formData)
+    console.log('Sending data to contract:', {
+      token: selectedAsset?.address,
+      amount: formData.amount,
+      targetPrice: formData.pricePrediction,
+      isAbove: formData.direction,
+      timeframe: formData.duration * 60,
+    });
+
+    try {
+      // First, approve the contract to spend USDC
+      await approveUSDC();
+      toast.success('USDC approved successfully!');
+
+      // Then, create the bet order
+      await createBetOrder();
+      toast.success('Bet order created successfully!');
+      onSubmit(formData) // Call the onSubmit prop if needed
+    } catch (error) {
+      console.error('Transaction failed:', error)
+      toast.error('Failed to create bet order')
+    }
   }
 
   const handleAssetChange = (asset: string) => {
@@ -79,27 +126,25 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
         <label className="block text-sm font-medium mb-1">Amount (USDC)</label>
         <input
           type="number"
-          min="0"
           step="1"
-          className="w-full p-2 border rounded-lg  dark:bg-gray-700"
+          className="w-full p-2 border rounded-lg dark:bg-gray-700"
           value={formData.amount}
           onChange={(e) => {
-            const value = e.target.value === '' ? 0 : parseInt(e.target.value)
-            setFormData({ ...formData, amount: value })
+            const value = e.target.value === '' ? 0 : parseInt(e.target.value, 10);
+            setFormData({ ...formData, amount: value });
           }}
         />
       </div>
       <div>
-        <label className="block text-sm font-medium mb-1">Price Prediction(USDC)</label>
+        <label className="block text-sm font-medium mb-1">Price Prediction (USDC)</label>
         <input
           type="number"
-          min="0"
           step="1"
-          className="w-full p-2 border rounded-lg  dark:bg-gray-700"
-          value={formData.amount}
+          className="w-full p-2 border rounded-lg dark:bg-gray-700"
+          value={formData.pricePrediction}
           onChange={(e) => {
-            const value = e.target.value === '' ? 0 : parseInt(e.target.value)
-            setFormData({ ...formData, amount: value })
+            const value = e.target.value === '' ? 0 : parseInt(e.target.value, 10);
+            setFormData({ ...formData, pricePrediction: value });
           }}
         />
       </div>

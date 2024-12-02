@@ -2,6 +2,7 @@ export interface Trade {
   id: string;
   creator: string;
   asset: string;
+  targetPrice: number;
   amount: number;
   direction: 'up' | 'down';
   duration: number;
@@ -12,5 +13,5 @@ export interface Trade {
 
 export interface ChallengeTradeData {
   tradeId: string;
-  amount: number;
+  amount : number
 }

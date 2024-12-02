@@ -5,7 +5,9 @@ import { toast } from 'react-hot-toast';
 import SubsocialGrill from '../components/SubsocialGrill';
 import OpenTradesList from '../components/OpenTradesList';
 import { Trade } from '../types/trade';
-import { getOpenTrades, challengeTrade } from '../services/tradeService';
+import { useAccount } from 'wagmi';
+import { getOpenTrades } from '../services/tradeService';
+import { useTradeService,getUserBetHistory,getUserBetStats } from '../services/tradeService';
 
 const features = [
   {
@@ -27,12 +29,18 @@ const features = [
 
 const Home: React.FC = () => {
   const [trades, setTrades] = useState<Trade[]>([]);
+  const { challengeTrade } = useTradeService();
+  const { address, isConnected } = useAccount();
 
   useEffect(() => {
     const loadTrades = async () => {
       try {
         const openTrades = await getOpenTrades();
         setTrades(openTrades);
+        if (address) {
+          getUserBetHistory(address);
+          getUserBetStats(address);
+        }
       } catch (error) {
         console.error('Failed to load trades:', error);
         toast.error('Failed to load open trades');
@@ -43,13 +51,7 @@ const Home: React.FC = () => {
   }, []);
 
   const handleChallenge = async (tradeId: string, amount: number) => {
-    try {
-      await challengeTrade(tradeId, amount);
-      toast.success('Challenge submitted successfully!');
-    } catch (error) {
-      console.error('Failed to challenge trade:', error);
-      toast.error('Failed to submit challenge');
-    }
+    await challengeTrade(tradeId, amount);
   };
 
   return (
@@ -79,7 +81,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-12">
+      <section className="py-5">
         <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {features.map((feature, index) => (

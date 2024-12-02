@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 import CreateTradeForm, { TradeFormData } from '../components/CreateTradeForm';
 import TradingViewChart from '../components/TradingViewChart';
 import OpenTradesList from '../components/OpenTradesList';
-import { getOpenTrades, challengeTrade } from '../services/tradeService';
+import { getOpenTrades } from '../services/tradeService';
 import { Trade } from '../types/trade';
 
 const TradePage: React.FC = () => {
@@ -31,7 +31,7 @@ const TradePage: React.FC = () => {
 
   const handleChallenge = async (tradeId: string, amount: number) => {
     try {
-      await challengeTrade(tradeId, amount);
+      // await challengeTrade(tradeId, amount);
       toast.success('Challenge submitted successfully!');
     } catch (error) {
       console.error('Failed to challenge trade:', error);

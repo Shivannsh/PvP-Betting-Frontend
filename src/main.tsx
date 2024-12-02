@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { WagmiConfig, createConfig, configureChains } from 'wagmi'
-import { polygon, polygonMumbai } from 'wagmi/chains'
+import { baseSepolia, moonbeam } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
@@ -12,7 +12,7 @@ import App from './App'
 import './index.css'
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [polygon, polygonMumbai],
+  [baseSepolia],
   [publicProvider()]
 )
 
@@ -23,7 +23,7 @@ const config = createConfig({
     new WalletConnectConnector({
       chains,
       options: {
-        projectId: 'YOUR_PROJECT_ID', // Replace with actual WalletConnect project ID
+        projectId: '9671caea98d5aa1bb322958678c935e9', // Replace with actual WalletConnect project ID
       },
     }),
   ],

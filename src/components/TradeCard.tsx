@@ -55,6 +55,10 @@ const TradeCard: React.FC<TradeCardProps> = ({ trade, onChallenge }) => {
           {formatAmount(trade.amount)}
         </p>
         <p className="text-sm">
+          <span className="text-gray-600 dark:text-gray-400">Price Prediction: </span>
+          {formatAmount(trade.targetPrice)}
+        </p>
+        <p className="text-sm">
           <span className="text-gray-600 dark:text-gray-400">Duration: </span>
           {formatDuration(trade.duration)}
         </p>
@@ -65,15 +69,6 @@ const TradeCard: React.FC<TradeCardProps> = ({ trade, onChallenge }) => {
       </div>
 
       <div className="space-y-2">
-        <input
-          type="number"
-          min="0"
-          step="1"
-          value={amount}
-          onChange={(e) => setAmount(Number(e.target.value))}
-          className="w-full p-2 border rounded-lg dark:bg-gray-700"
-          placeholder="Enter amount to challenge"
-        />
         <button
           onClick={handleChallenge}
           className="w-full btn-primary"
