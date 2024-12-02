@@ -82,17 +82,8 @@ export const useTradeService = () => {
   const challengeTrade = async (tradeId: string, amount: number): Promise<void> => {
     console.log('Challenging trade:', tradeId, 'with amount:', amount);
 
-    const { write: approveUSDC } = useContractWrite({
-      address: USDC_ADDRESS,
-      abi: USDC_ABI,
-      functionName: 'approve',
-      args: [CONTRACT_ADDRESS, amount * Math.pow(10, 6)], // Approve the contract to spend USDC
-    });
 
     try {
-      await approveUSDC();
-      toast.success('USDC approved successfully!');
-
       await challengeBetOrder({ args: [parseInt(tradeId)] }); // Ensure correct argument structure
       toast.success('Challenge submitted successfully!');
     } catch (error) {
