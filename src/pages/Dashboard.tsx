@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
+import { getUserBetStats } from '../services/tradeService'
 
 interface Trade {
   id: string
@@ -33,7 +34,29 @@ const mockTrades: Trade[] = [
 ]
 
 const Dashboard: React.FC = () => {
-  const { isConnected } = useAccount()
+  const { isConnected, address } = useAccount()
+  const [betStats, setBetStats] = useState({
+    totalBetsPlaced: 0,
+    totalBetsWon: 0,
+    totalAmountWon: 0,
+    totalAmountBet: 0,
+  })
+
+  useEffect(() => {
+    const fetchBetStats = async () => {
+      if (isConnected && address) {
+        const stats = await getUserBetStats(address)
+        setBetStats({
+          totalBetsPlaced: stats[1][0],
+          totalBetsWon: stats[1][1],
+          totalAmountWon: stats[1][2],
+          totalAmountBet: stats[1][3],
+        })
+      }
+    }
+
+    fetchBetStats()
+  }, [isConnected, address])
 
   if (!isConnected) {
     return (
@@ -51,6 +74,13 @@ const Dashboard: React.FC = () => {
       <h2 className="text-2xl font-bold">Your Trades</h2>
       
       <div className="grid gap-4">
+        <div className="card">
+          <h3 className="text-lg font-semibold">Bet Statistics</h3>
+          <p>Total Bets Placed: {betStats.totalBetsPlaced}</p>
+          <p>Total Bets Won: {betStats.totalBetsWon}</p>
+          <p>Total Amount Won: {betStats.totalAmountWon} USDC</p>
+          <p>Total Amount Bet: {betStats.totalAmountBet} USDC</p>
+        </div>
         {mockTrades.map((trade) => (
           <div key={trade.id} className="card">
             <div className="flex justify-between items-center">

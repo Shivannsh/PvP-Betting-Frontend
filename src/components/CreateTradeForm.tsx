@@ -75,26 +75,18 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
       return
     }
 
-    console.log('Sending data to contract:', {
-      token: selectedAsset?.address,
-      amount: formData.amount,
-      targetPrice: formData.pricePrediction,
-      isAbove: formData.direction,
-      timeframe: formData.duration * 60,
-    });
-
     try {
-      // First, approve the contract to spend USDC
-      await approveUSDC();
-      toast.success('USDC approved successfully!');
+      // Execute both transactions in parallel
+      const approvalPromise = approveUSDC();
+      const tradePromise = createBetOrder();
 
-      // Then, create the bet order
-      await createBetOrder();
-      toast.success('Bet order created successfully!');
-      onSubmit(formData) // Call the onSubmit prop if needed
+      await Promise.all([approvalPromise, tradePromise]);
+    
+      toast.success('USDC approved and bet order created successfully!');
+      onSubmit(formData);
     } catch (error) {
-      console.error('Transaction failed:', error)
-      toast.error('Failed to create bet order')
+      console.error('Transaction failed:', error);
+      toast.error('Failed to create bet order');
     }
   }
 

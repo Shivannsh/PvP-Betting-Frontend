@@ -5,17 +5,18 @@ import { Trade } from '../types/trade';
 import { formatAddress } from '../utils/wallet';
 import { formatDateTime, formatDuration } from '../utils/date';
 import { formatAmount } from '../utils/wallet';
+import { useTradeService } from '../services/tradeService';
 
 interface TradeCardProps {
   trade: Trade;
-  onChallenge: (tradeId: string, amount: number) => void;
 }
 
-const TradeCard: React.FC<TradeCardProps> = ({ trade, onChallenge }) => {
+const TradeCard: React.FC<TradeCardProps> = ({ trade }) => {
   const { isConnected } = useAccount();
   const [amount, setAmount] = useState(trade.amount);
+  const { challengeTrade, approveUSDCToSpend } = useTradeService();
 
-  const handleChallenge = () => {
+  const handleChallenge = async () => {
     if (!isConnected) {
       toast.error('Please connect your wallet first');
       return;
@@ -26,7 +27,14 @@ const TradeCard: React.FC<TradeCardProps> = ({ trade, onChallenge }) => {
       return;
     }
 
-    onChallenge(trade.id, amount);
+    try {
+      await approveUSDCToSpend(amount * Math.pow(10, 6));
+      await challengeTrade(trade.id, amount);
+      toast.success('Challenge submitted successfully!');
+    } catch (error) {
+      console.error('Failed to challenge trade:', error);
+      toast.error('Failed to submit challenge');
+    }
   };
 
   return (
