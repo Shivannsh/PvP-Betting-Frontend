@@ -94,12 +94,36 @@ export const useTradeService = () => {
 
 export const getUserBetHistory = async (userAddress: Address) => {
   const data = await contract.getUserBetHistory(userAddress);
+  console.log('userHistory:', data);
   return data;
 };
 
-export const getUserBetStats = async (userAddress: Address) => {
-  const data = await contract.getUserBetStats(userAddress);
-  console.log('userStats: fgyhujikojiuhgyfd', data);
-  return data;
+type ProxyResult = [bigint, bigint, bigint, bigint];
 
+function extractFields(input: any): ProxyResult {
+    const [field0, field1, field2, field3] = input;
+
+    if (
+        typeof field0 !== "bigint" ||
+        typeof field1 !== "bigint" ||
+        typeof field2 !== "bigint" ||
+        typeof field3 !== "bigint"
+    ) {
+        throw new Error("Invalid input structure");
+    }
+
+    return [field0, field1, field2, field3];
+}
+
+export const getUserBetStats = async (userAddress: Address) => {
+    const data = await contract.getUserBetStats(userAddress);
+    console.log('userStats:', data);
+    
+    try {
+        const extractedStats = extractFields(data);
+        return extractedStats;
+    } catch (error) {
+        console.error("Error extracting fields:", (error as Error).message);
+        throw error; // Rethrow the error for further handling
+    }
 };
