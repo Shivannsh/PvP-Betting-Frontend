@@ -61,29 +61,31 @@ const Home: React.FC = () => {
 
       {/* Hero Section */}
       <section className="text-center space-y-6 h-[80vh] flex items-center justify-between">
-        {/* Left Side: Text and Buttons */}
-        <div className="text-left max-w-xl space-y-6">
-          <h1 className="text-4xl md:text-5xl font-bold">
-            Decentralized Crypto <br></br><span className='text-pink-500'>1v1 Betting Platform</span>
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
-            Challenge other traders in 1v1 price prediction battles and win rewards
-          </p>
-          <div className="flex justify-start gap-4">
-            <Link to="/trade" className="btn-primary">
-              Start Trading
-            </Link>
-            <Link to="/dashboard" className="btn-secondary">
-              View Dashboard
-            </Link>
-          </div>
-        </div>
+  {/* Left Side: Text and Buttons */}
+  <div className="text-left max-w-xl space-y-6 w-full sm:w-auto">
+    <h1 className="text-9xl md:text-6xl font-bold">
+      Decentralized Crypto <br />
+      <span className="text-pink-500">1v1 Betting Platform</span>
+    </h1>
+    <p className="text-xl text-gray-600 dark:text-gray-400">
+      Challenge other traders in 1v1 price prediction battles and win rewards
+    </p>
+    <div className="flex justify-start gap-4">
+      <Link to="/trade" className="btn-primary">
+        Start Trading
+      </Link>
+      <Link to="/dashboard" className="btn-secondary">
+        View Dashboard
+      </Link>
+    </div>
+  </div>
 
-        {/* Right Side: Spline div */}
-        <div className="spline-div w-1/2 h-full">
-          <Spline scene="https://prod.spline.design/xGMVg7O1T83wkLDb/scene.splinecode" />
-        </div>
-      </section>
+  {/* Right Side: Spline div */}
+  <div className="spline-div w-1/2 h-full hidden sm:block">
+    <Spline scene="https://prod.spline.design/xGMVg7O1T83wkLDb/scene.splinecode" />
+  </div>
+</section>
+
 
       {/* Features Section */}
       <section className="py-5">
