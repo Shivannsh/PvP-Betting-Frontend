@@ -39,7 +39,7 @@ const TradeCard: React.FC<TradeCardProps> = ({ trade, onChallenge }) => {
   };
 
   return (
-    <div className="card">
+    <div className="card dark:bg-stone-800">
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-lg font-semibold">{trade.asset}/USD</h3>
@@ -58,7 +58,9 @@ const TradeCard: React.FC<TradeCardProps> = ({ trade, onChallenge }) => {
         </span>
       </div>
 
+
       <div className="space-y-2 mb-4">
+        <div className='space-y-2 mb-4'>
         <p className="text-sm">
           <span className="text-gray-600 dark:text-gray-400">Amount: </span>
           {formatAmount(trade.amount)}
@@ -76,6 +78,7 @@ const TradeCard: React.FC<TradeCardProps> = ({ trade, onChallenge }) => {
           <span className="text-gray-600 dark:text-gray-400">Expires: </span>
           {formatDateTime(trade.expiresAt)}
         </p>
+        </div>
       </div>
 
       <div className="space-y-2">
@@ -84,7 +87,7 @@ const TradeCard: React.FC<TradeCardProps> = ({ trade, onChallenge }) => {
           className="w-full btn-primary"
           disabled={!isConnected}
         >
-          Challenge Trade
+          {trade.status == "matched" ? "already challenged" : "Challenge trade"}
         </button>
       </div>
     </div>

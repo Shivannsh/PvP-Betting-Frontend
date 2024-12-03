@@ -20,7 +20,7 @@ function extractUserHistory(proxyResult: any): UserHistory[] {
 
     for (let i = 0; i < proxyResult.length; i++) {
         const entry = proxyResult[i];
-        
+
         if (entry && typeof entry === "object") {
             userHistory.push({
                 sender: entry[0],
@@ -80,19 +80,26 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="space-y-8">
-            <h2 className="text-2xl font-bold">Your Trades</h2>
+            <h2 className="text-3xl font-bold">Your Trades</h2>
             <div className="grid gap-4">
                 <div className="card dark:bg-stone-800">
                     <h3 className="text-lg font-semibold">Bet Statistics</h3>
-                    <p>Total Bets Placed: {betStats.totalBetsPlaced}</p>
-                    <p>Total Bets Won: {betStats.totalBetsWon}</p>
-                    <p>Total Amount Won: {betStats.totalAmountWon} USDC</p>
-                    <p>Total Amount Bet: {betStats.totalAmountBet} USDC</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex flex-col space-y-2">
+                            <p>Total Bets Placed: {betStats.totalBetsPlaced}</p>
+                            <p>Total Bets Won: {betStats.totalBetsWon}</p>
+                        </div>
+                        <div className="flex flex-col space-y-2">
+                            <p>Total Amount Won: {betStats.totalAmountWon} USDC</p>
+                            <p>Total Amount Bet: {betStats.totalAmountBet} USDC</p>
+                        </div>
+                    </div>
                 </div>
-                <div className="card dark:bg-stone-800">
-                    <h3 className="text-lg font-semibold">User Bet History</h3>
+
+
+                <h2 className="text-2xl font-bold">User Bet History</h2>
                     {userHistory.length > 0 ? (
-                        <div>
+                        <div className='flex flex-row flex-wrap gap-6'>
                             {userHistory.map((entry, index) => (
                                 <BetCard
                                     key={index}
@@ -110,7 +117,6 @@ const Dashboard: React.FC = () => {
                         <p>No bet history available.</p>
                     )}
                 </div>
-            </div>
         </div>
     )
 }
