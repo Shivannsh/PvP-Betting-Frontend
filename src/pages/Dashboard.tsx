@@ -81,7 +81,7 @@ const Dashboard: React.FC = () => {
     return (
         <div className="space-y-8">
             <h2 className="text-3xl font-bold">Your Trades</h2>
-            <div className="grid gap-4">
+            <div className="grid gap-6">
                 <div className="card dark:bg-stone-800">
                     <h3 className="text-lg font-semibold">Bet Statistics</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
