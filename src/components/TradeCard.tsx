@@ -64,6 +64,7 @@ const TradeCard: React.FC<TradeCardProps> = ({ trade }) => {
         </p>
         <p className="text-sm">
           <span className="text-gray-600 dark:text-gray-400">Price Prediction: </span>
+          {trade.direction === 'up' ? 'More than ' : 'Less than '}
           {formatAmount(trade.targetPrice)}
         </p>
         <p className="text-sm">

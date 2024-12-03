@@ -82,14 +82,14 @@ const Dashboard: React.FC = () => {
         <div className="space-y-8">
             <h2 className="text-2xl font-bold">Your Trades</h2>
             <div className="grid gap-4">
-                <div className="card">
+                <div className="card dark:bg-stone-800">
                     <h3 className="text-lg font-semibold">Bet Statistics</h3>
                     <p>Total Bets Placed: {betStats.totalBetsPlaced}</p>
                     <p>Total Bets Won: {betStats.totalBetsWon}</p>
                     <p>Total Amount Won: {betStats.totalAmountWon} USDC</p>
                     <p>Total Amount Bet: {betStats.totalAmountBet} USDC</p>
                 </div>
-                <div className="card">
+                <div className="card dark:bg-stone-800">
                     <h3 className="text-lg font-semibold">User Bet History</h3>
                     {userHistory.length > 0 ? (
                         <div>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useAccount, useContractWrite } from 'wagmi'
-import {abi} from '../helpers/abi' // Import your contract ABI
+import { abi } from '../helpers/abi' // Import your contract ABI
 import CONTRACT_ADDRESS from '../helpers/deployed_address' // Import your contract address
-import {USDC_ABI} from '../helpers/usdc_abi' // Import USDC ABI
+import { USDC_ABI } from '../helpers/usdc_abi' // Import USDC ABI
 import USDC_ADDRESS from '../helpers/usdc_address' // Import USDC contract address
 
 interface CreateTradeFormProps {
@@ -20,8 +20,8 @@ export interface TradeFormData {
 }
 
 const SUPPORTED_ASSETS = [
-  { id: 'BTC', name: 'Bitcoin',address :'0x0FB99723Aee6f420beAD13e6bBB79b7E6F034298' },
-  { id: 'ETH', name: 'Ethereum',address: '0x4aDC67696bA383F43DD60A9e78F2C97Fbbfc7cb1' }
+  { id: 'BTC', name: 'Bitcoin', address: '0x0FB99723Aee6f420beAD13e6bBB79b7E6F034298' },
+  { id: 'ETH', name: 'Ethereum', address: '0x4aDC67696bA383F43DD60A9e78F2C97Fbbfc7cb1' }
 ]
 
 const DURATIONS = [
@@ -64,7 +64,7 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!isConnected) {
       toast.error('Please connect your wallet first')
       return
@@ -81,7 +81,7 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
       const tradePromise = createBetOrder();
 
       await Promise.all([approvalPromise, tradePromise]);
-    
+
       toast.success('USDC approved and bet order created successfully!');
       onSubmit(formData);
     } catch (error) {
@@ -96,11 +96,11 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
   }
 
   return (
-    <form onSubmit={handleSubmit} className="card space-y-4">
+    <form onSubmit={handleSubmit} className="card space-y-4 dark:bg-stone-800">
       <div>
         <label className="block text-sm font-medium mb-1">Select Asset</label>
         <select
-          className="w-full p-2 border rounded-lg bg-white dark:bg-gray-700"
+          className="w-full p-2 rounded-lg bg-white dark:bg-stone-700"
           value={formData.asset}
           onChange={(e) => handleAssetChange(e.target.value)}
         >
@@ -117,7 +117,7 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
         <input
           type="number"
           step="1"
-          className="w-full p-2 border rounded-lg dark:bg-gray-700"
+          className="w-full p-2 rounded-lg dark:bg-stone-700"
           value={formData.amount}
           onChange={(e) => {
             const value = e.target.value === '' ? 0 : parseInt(e.target.value, 10);
@@ -125,52 +125,57 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
           }}
         />
       </div>
+      
       <div>
-        <label className="block text-sm font-medium mb-1">Price Prediction (USDC)</label>
-        <input
-          type="number"
-          step="1"
-          className="w-full p-2 border rounded-lg dark:bg-gray-700"
-          value={formData.pricePrediction}
-          onChange={(e) => {
-            const value = e.target.value === '' ? 0 : parseInt(e.target.value, 10);
-            setFormData({ ...formData, pricePrediction: value });
-          }}
-        />
-      </div>
+  <label className="block text-sm font-medium mb-1">Prediction (More than or Less than)</label>
+  <div className="flex gap-4">
+    <button
+      type="button"
+      className={`flex-2 px-12 rounded-lg ${
+        formData.direction === true
+          ? 'bg-green-500 text-white'
+          : 'bg-white dark:bg-gray-700'
+      }`}
+      onClick={() => setFormData({ ...formData, direction: true })}
+    >
+      More
+    </button>
+    <button
+      type="button"
+      className={`flex-2 px-12 rounded-lg ${
+        formData.direction === false
+          ? 'bg-red-500 text-white'
+          : 'bg-white dark:bg-gray-700'
+      }`}
+      onClick={() => setFormData({ ...formData, direction: false })}
+    >
+      Less
+    </button>
+    <input
+      type="number"  // Keep as number for better decimal support
+      step="0.01"  // Allow decimal input
+      className="flex-2 w-80 p-2 rounded-lg dark:bg-stone-700"
+      value={formData.pricePrediction}
+      onChange={(e) => {
+        // Parse the input to a float to ensure we handle decimals
+        const value = e.target.value === '' ? '' : parseFloat(e.target.value);
+        // Only update if value is a valid number (including decimals)
+        if (!isNaN(value) || e.target.value === '') {
+          setFormData({ ...formData, pricePrediction: value });
+        }
+      }}
+      placeholder="Enter price prediction"
+    />
+  </div>
+</div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">Prediction</label>
-        <div className="flex gap-4">
-          <button
-            type="button"
-            className={`flex-1 p-2 rounded-lg border ${
-              formData.direction === true
-                ? 'bg-green-500 text-white'
-                : 'bg-white dark:bg-gray-700'
-            }`}
-            onClick={() => setFormData({ ...formData, direction: true })}
-          >
-            Price Up
-          </button>
-          <button
-            type="button"
-            className={`flex-1 p-2 rounded-lg border ${
-              formData.direction === false
-                ? 'bg-red-500 text-white'
-                : 'bg-white dark:bg-gray-700'
-            }`}
-            onClick={() => setFormData({ ...formData, direction: false })}
-          >
-            Price Down
-          </button>
-        </div>
-      </div>
+
+
 
       <div>
         <label className="block text-sm font-medium mb-1">Duration</label>
         <select
-          className="w-full p-2 border rounded-lg bg-white dark:bg-gray-700"
+          className="w-full p-2 rounded-lg bg-white dark:bg-stone-700"
           value={formData.duration}
           onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) })}
         >

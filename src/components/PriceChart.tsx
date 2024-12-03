@@ -62,7 +62,7 @@ const PriceChart: React.FC<PriceChartProps> = ({ data, title }) => {
   }
 
   return (
-    <div className="w-full h-[300px] p-4 card">
+    <div className="w-full h-[300px] p-4 card dark:bg-stone-800">
       <Line data={chartData} options={options} />
     </div>
   )
