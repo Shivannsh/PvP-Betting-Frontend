@@ -20,8 +20,8 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="text-xl font-bold text-pink-500">
-              DeFi Betting
-            </Link>
+              AlphaBet
+                </Link>
           </div>
 
           {/* Desktop Navigation */}
