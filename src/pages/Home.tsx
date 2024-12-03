@@ -30,7 +30,7 @@ const features = [
 
 const Home: React.FC = () => {
   const [trades, setTrades] = useState<Trade[]>([]);
-  const { challengeTrade } = useTradeService();
+  const { approveUSDCToSpend,challengeTrade } = useTradeService();
   const { address, isConnected } = useAccount();
 
   useEffect(() => {

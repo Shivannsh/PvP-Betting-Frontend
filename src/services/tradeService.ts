@@ -11,7 +11,7 @@ import USDC_ADDRESS from '../helpers/usdc_address';
 const contractABI = abi;
 const contractAddress = CONTRACT_ADDRESS;
 
-const provider = new ethers.JsonRpcProvider("https://base-sepolia.g.alchemy.com/v2/44VAXHBaUMjTDOeGL0wSxN7MqjM5jSP1");
+const provider = new ethers.JsonRpcProvider("https://1rpc.io/MZULgES5tTVJtSBP/glmr");
 const contract = new ethers.Contract(contractAddress, contractABI, provider);
 
 let mockTrades: Trade[] = [];
@@ -70,11 +70,19 @@ export const useTradeService = () => {
   const challengeTrade = async (tradeId: string, amount: number): Promise<void> => {
     console.log('Challenging trade:', tradeId, 'with amount:', amount);
     try {
-      await challengeBetOrder({ args: [parseInt(tradeId)] });
+      if (!challengeBetOrder) {
+        throw new Error('Challenge bet order function not available');
+      }
+      
+      const tx = await challengeBetOrder({ args: [parseInt(tradeId)] });
+      console.log('Challenge transaction:', tx);
+      
+      console.log('Trade challenged successfully!');
       toast.success('Challenge submitted successfully!');
     } catch (error) {
       console.error('Failed to challenge trade:', error);
       toast.error('Failed to submit challenge');
+      throw error; // Re-throw to handle in component
     }
   };
 

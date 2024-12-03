@@ -5,6 +5,7 @@ import TradingViewChart from '../components/TradingViewChart';
 import OpenTradesList from '../components/OpenTradesList';
 import { getOpenTrades } from '../services/tradeService';
 import { Trade } from '../types/trade';
+import { useTradeService } from '../services/tradeService';
 
 const TradePage: React.FC = () => {
   const [selectedAsset, setSelectedAsset] = useState('BTC');
@@ -28,10 +29,13 @@ const TradePage: React.FC = () => {
     console.log('Creating trade with data:', formData);
     // TODO: Implement contract interaction
   };
+  const { challengeTrade } = useTradeService();
 
   const handleChallenge = async (tradeId: string, amount: number) => {
     try {
-      // await challengeTrade(tradeId, amount);
+      // Refresh the trades list after successful challenge
+      const openTrades = await getOpenTrades();
+      setTrades(openTrades);
       toast.success('Challenge submitted successfully!');
     } catch (error) {
       console.error('Failed to challenge trade:', error);
