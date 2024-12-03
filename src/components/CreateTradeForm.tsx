@@ -88,11 +88,11 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
 
       await Promise.all([approvalPromise, tradePromise]);
 
-      toast.success('USDC approved and bet order created successfully!');
+      
       onSubmit(formData);
     } catch (error) {
       console.error('Transaction failed:', error);
-      toast.error('Failed to create bet order');
+   
     }
   }
 

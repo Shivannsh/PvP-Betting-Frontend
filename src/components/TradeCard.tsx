@@ -31,10 +31,10 @@ const TradeCard: React.FC<TradeCardProps> = ({ trade, onChallenge }) => {
     try {
       await approveUSDCToSpend(amount * Math.pow(10, 6));
       await onChallenge(trade.id, amount);
-      toast.success('Challenge submitted successfully!');
+     
     } catch (error) {
       console.error('Failed to challenge trade:', error);
-      toast.error('Failed to submit challenge');
+      
     }
   };
 
