@@ -9,9 +9,10 @@ import { useTradeService } from '../services/tradeService';
 
 interface TradeCardProps {
   trade: Trade;
+  onChallenge: (tradeId: string, amount: number) => void;
 }
 
-const TradeCard: React.FC<TradeCardProps> = ({ trade }) => {
+const TradeCard: React.FC<TradeCardProps> = ({ trade, onChallenge }) => {
   const { isConnected } = useAccount();
   const [amount, setAmount] = useState(trade.amount);
   const { challengeTrade, approveUSDCToSpend } = useTradeService();
@@ -29,7 +30,7 @@ const TradeCard: React.FC<TradeCardProps> = ({ trade }) => {
 
     try {
       await approveUSDCToSpend(amount * Math.pow(10, 6));
-      await challengeTrade(trade.id, amount);
+      await onChallenge(trade.id, amount);
       toast.success('Challenge submitted successfully!');
     } catch (error) {
       console.error('Failed to challenge trade:', error);

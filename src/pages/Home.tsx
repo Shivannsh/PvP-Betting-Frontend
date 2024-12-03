@@ -7,7 +7,7 @@ import OpenTradesList from '../components/OpenTradesList';
 import { Trade } from '../types/trade';
 import { useAccount } from 'wagmi';
 import { getOpenTrades } from '../services/tradeService';
-import { useTradeService,getUserBetHistory,getUserBetStats } from '../services/tradeService';
+import { useTradeService, getUserBetHistory, getUserBetStats } from '../services/tradeService';
 import Spline from "@splinetool/react-spline";
 
 const features = [
@@ -33,56 +33,60 @@ const Home: React.FC = () => {
   const { challengeTrade } = useTradeService();
   const { address, isConnected } = useAccount();
 
-  useEffect(() => {
-    const loadTrades = async () => {
-      try {
-        const openTrades = await getOpenTrades();
-        setTrades(openTrades);
-        if (address) {
-          getUserBetHistory(address);
-          getUserBetStats(address);
-        }
-      } catch (error) {
-        console.error('Failed to load trades:', error);
-        toast.error('Failed to load open trades');
+  const loadTrades = async () => {
+    try {
+      const openTrades = await getOpenTrades();
+      setTrades(openTrades);
+      if (address) {
+        getUserBetHistory(address);
+        getUserBetStats(address);
       }
-    };
+    } catch (error) {
+      console.error('Failed to load trades:', error);
+      toast.error('Failed to load open trades');
+    }
+  };
 
+  useEffect(() => {
     loadTrades();
-  }, []);
+    const interval = setInterval(loadTrades, 1000); // Fetch trades every 30 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [address, isConnected]);
 
   const handleChallenge = async (tradeId: string, amount: number) => {
     await challengeTrade(tradeId, amount);
   };
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12"
+    >
       {/* Hero Section */}
       <section className="text-center space-y-6 h-[80vh] flex items-center justify-between">
-  {/* Left Side: Text and Buttons */}
-  <div className="text-left max-w-xl space-y-6">
-    <h1 className="text-4xl md:text-5xl font-bold">
-      Decentralized Crypto <br></br><span className='text-pink-500'>1v1 Betting Platform</span> 
-    </h1>
-    <p className="text-xl text-gray-600 dark:text-gray-400">
-      Challenge other traders in 1v1 price prediction battles and win rewards
-    </p>
-    <div className="flex justify-start gap-4">
-      <Link to="/trade" className="btn-primary">
-        Start Trading
-      </Link>
-      <Link to="/dashboard" className="btn-secondary">
-        View Dashboard
-      </Link>
-    </div>
-  </div>
+        {/* Left Side: Text and Buttons */}
+        <div className="text-left max-w-xl space-y-6">
+          <h1 className="text-4xl md:text-5xl font-bold">
+            Decentralized Crypto <br />
+            <span className='text-pink-500'>1v1 Betting Platform</span>
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-400">
+            Challenge other traders in 1v1 price prediction battles and win rewards
+          </p>
+          <div className="flex justify-start gap-4">
+            <Link to="/trade" className="btn-primary">
+              Start Trading
+            </Link>
+            <Link to="/dashboard" className="btn-secondary">
+              View Dashboard
+            </Link>
+          </div>
+        </div>
 
-  {/* Right Side: Spline div */}
-  <div className="spline-div w-1/2 h-full">
-  <Spline scene="https://prod.spline.design/xGMVg7O1T83wkLDb/scene.splinecode" />
-  </div>
-</section>
-
+        {/* Right Side: Spline div */}
+        <div className="spline-div w-1/2 h-full">
+          <Spline scene="https://prod.spline.design/xGMVg7O1T83wkLDb/scene.splinecode" />
+        </div>
+      </section>
 
       {/* Open Trades Section */}
       <section className="py-12">
