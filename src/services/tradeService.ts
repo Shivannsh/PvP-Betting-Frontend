@@ -30,7 +30,7 @@ async function fetchTrades(): Promise<Trade[]> {
         id: orderIds[index].toString(),
         creator: order[0],
         targetPrice,
-        asset: "Asset Name",
+        asset: "ETH",
         amount: parseFloat(ethers.formatUnits(order[2], 6)),
         direction,
         duration,
