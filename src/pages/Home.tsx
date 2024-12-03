@@ -63,11 +63,11 @@ const Home: React.FC = () => {
       <section className="text-center space-y-6 h-[80vh] flex items-center justify-between">
   {/* Left Side: Text and Buttons */}
   <div className="text-left max-w-xl space-y-6 w-full sm:w-auto">
-    <h1 className="text-9xl md:text-4xl font-bold">
+    <h1 className="text-4xl md:text-4xl font-bold">
       Decentralized Crypto <br />
-      <span className="text-pink-500 md:text-6xl">1v1 Betting Platform</span>
+      <span className="text-pink-500 text-5xl md:text-6xl">1v1 Betting Platform</span>
     </h1>
-    <p className="text-xl text-gray-600 dark:text-gray-400">
+    <p className="text-l text-gray-600 dark:text-gray-400">
       Challenge other traders in 1v1 price prediction battles and win rewards
     </p>
     <div className="flex justify-start gap-4">
