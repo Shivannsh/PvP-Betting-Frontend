@@ -20,8 +20,9 @@ export interface TradeFormData {
 }
 
 const SUPPORTED_ASSETS = [
-  { id: 'BTC', name: 'Bitcoin', address: '0x0FB99723Aee6f420beAD13e6bBB79b7E6F034298' },
-  { id: 'ETH', name: 'Ethereum', address: '0x4aDC67696bA383F43DD60A9e78F2C97Fbbfc7cb1' }
+  { id: 'BTC', name: 'Bitcoin', address: '0x8c4425e141979c66423A83bE2ee59135864487Eb' },
+  { id: 'ETH', name: 'Ethereum', address: '0x9ce2388a1696e22F870341C3FC1E89710C7569B5' },
+  {id: 'DOT' , name : 'DOT' , address : '0x1466b4bD0C4B6B8e1164991909961e0EE6a66d8c'}
 ]
 
 const DURATIONS = [
@@ -54,6 +55,11 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
       formData.duration * 60,
     ],
   })
+
+  console.log(selectedAsset?.address);
+  console.log(selectedAsset?.address);
+  console.log(selectedAsset?.address);
+  console.log(selectedAsset?.address);
 
   const { write: approveUSDC } = useContractWrite({
     address: USDC_ADDRESS,
