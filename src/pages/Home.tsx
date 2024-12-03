@@ -8,6 +8,7 @@ import { Trade } from '../types/trade';
 import { useAccount } from 'wagmi';
 import { getOpenTrades } from '../services/tradeService';
 import { useTradeService,getUserBetHistory,getUserBetStats } from '../services/tradeService';
+import Spline from "@splinetool/react-spline";
 
 const features = [
   {
@@ -57,22 +58,31 @@ const Home: React.FC = () => {
   return (
     <div className="space-y-12">
       {/* Hero Section */}
-      <section className="text-center space-y-6">
-        <h1 className="text-4xl md:text-5xl font-bold">
-          Decentralized Crypto Price Prediction Platform
-        </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Challenge other traders in 1v1 price prediction battles and win rewards
-        </p>
-        <div className="flex justify-center gap-4">
-          <Link to="/trade" className="btn-primary">
-            Start Trading
-          </Link>
-          <Link to="/dashboard" className="btn-secondary">
-            View Dashboard
-          </Link>
-        </div>
-      </section>
+      <section className="text-center space-y-6 h-[80vh] flex items-center justify-between">
+  {/* Left Side: Text and Buttons */}
+  <div className="text-left max-w-xl space-y-6">
+    <h1 className="text-4xl md:text-5xl font-bold">
+      Decentralized Crypto <br></br><span className='text-pink-500'>1v1 Betting Platform</span> 
+    </h1>
+    <p className="text-xl text-gray-600 dark:text-gray-400">
+      Challenge other traders in 1v1 price prediction battles and win rewards
+    </p>
+    <div className="flex justify-start gap-4">
+      <Link to="/trade" className="btn-primary">
+        Start Trading
+      </Link>
+      <Link to="/dashboard" className="btn-secondary">
+        View Dashboard
+      </Link>
+    </div>
+  </div>
+
+  {/* Right Side: Spline div */}
+  <div className="spline-div w-1/2 h-full">
+  <Spline scene="https://prod.spline.design/xGMVg7O1T83wkLDb/scene.splinecode" />
+  </div>
+</section>
+
 
       {/* Open Trades Section */}
       <section className="py-12">

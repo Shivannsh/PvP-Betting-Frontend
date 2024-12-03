@@ -12,15 +12,14 @@ const Navbar: React.FC = () => {
     { name: 'Home', href: '/' },
     { name: 'Trade', href: '/trade' },
     { name: 'Dashboard', href: '/dashboard' },
-    { name: 'Leaderboard', href: '/leaderboard' },
   ]
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm">
+    <header className="bg-white dark:bg-neutral-900 shadow-sm">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold text-blue-600">
+            <Link to="/" className="text-xl font-bold text-pink-500">
               DeFi Betting
             </Link>
           </div>
@@ -64,7 +63,7 @@ const Navbar: React.FC = () => {
         <div className="fixed inset-0 z-50 bg-black bg-opacity-25" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white dark:bg-gray-800 px-6 py-6 sm:max-w-sm">
           <div className="flex items-center justify-between">
-            <Link to="/" className="text-xl font-bold text-blue-600">
+            <Link to="/" className="text-xl font-bold text-pink-500">
               DeFi Betting
             </Link>
             <button
