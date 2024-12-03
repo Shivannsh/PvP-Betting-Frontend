@@ -12,7 +12,7 @@ import App from './App'
 import './index.css'
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [baseSepolia],
+  [moonbeam],
   [publicProvider()]
 )
 
