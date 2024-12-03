@@ -122,11 +122,11 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
         <label className="block text-m font-medium mb-1">Amount (USDC)</label>
         <input
           type="number"
-          step="1"
+          step="0.1"
           className="w-full p-2 border-2 border-pink-500 rounded-lg dark:bg-pink-500 font-bold text-lg" 
           value={formData.amount}
           onChange={(e) => {
-            const value = e.target.value === '' ? 0 : parseInt(e.target.value, 10);
+            const value = e.target.value === '' ? 0 : parseFloat(e.target.value);
             setFormData({ ...formData, amount: value });
           }}
         />
