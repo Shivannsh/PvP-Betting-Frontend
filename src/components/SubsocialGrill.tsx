@@ -30,7 +30,7 @@ const SubsocialGrill: React.FC<SubsocialGrillProps> = ({ config = {} }) => {
     };
   }, [config]);
 
-  return <div id="grill" className="w-full min-h-[500px] card" />;
+  return <div id="grill" className="w-full h-[500px] card dark:bg-stone-800" />;
 };
 
 export default SubsocialGrill;

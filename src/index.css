@@ -10,14 +10,35 @@
 
 @layer components {
   .btn-primary {
-    @apply px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors;
+    @apply px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors;
   }
-  
+
   .btn-secondary {
-    @apply px-4 py-2 bg-transparent border-2 border-pink-600 text-pink-600 rounded-lg hover:bg-pink-600 hover:text-white transition-colors;
+    @apply px-4 py-2 bg-transparent border-2 border-pink-500 text-pink-500 rounded-lg hover:bg-pink-600 hover:text-white transition-colors;
   }
-  
+
   .card {
     @apply bg-white dark:bg-gray-800 rounded-xl shadow-md p-6;
+  }
+}
+
+/* Custom Scrollbar Styles */
+@layer utilities {
+  /* Apply custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;  /* Width of the scrollbar */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #ec4899; /* Pink color for the scrollbar thumb */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent; /* Transparent track */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #db2777; /* Darker pink on hover */
   }
 }

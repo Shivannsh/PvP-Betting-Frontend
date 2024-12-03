@@ -65,7 +65,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
     <div 
       id="tradingview_widget" 
       ref={container} 
-      className="w-full card"
+      className="w-full card dark:bg-stone-800"
     />
   );
 };
