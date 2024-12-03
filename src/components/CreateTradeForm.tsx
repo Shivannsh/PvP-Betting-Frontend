@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { useAccount, useContractWrite } from 'wagmi'
-import { abi } from '../helpers/abi' // Import your contract ABI
+
+import { useAccount, useContractWrite, useWaitForTransaction } from 'wagmi'
+import {abi} from '../helpers/abi' // Import your contract ABI
+
 import CONTRACT_ADDRESS from '../helpers/deployed_address' // Import your contract address
 import { USDC_ABI } from '../helpers/usdc_abi' // Import USDC ABI
 import USDC_ADDRESS from '../helpers/usdc_address' // Import USDC contract address
@@ -76,19 +78,18 @@ const CreateTradeForm: React.FC<CreateTradeFormProps> = ({ onSubmit, onAssetChan
     }
 
     try {
-      // Execute both transactions in parallel
-      const approvalPromise = approveUSDC();
-      const tradePromise = createBetOrder();
-
-      await Promise.all([approvalPromise, tradePromise]);
-
-      toast.success('USDC approved and bet order created successfully!');
+      // Execute the approval transaction first
+      await approveUSDC();
+      // Then execute the trade creation transaction
+    } catch (error) {
+      console.error('Transaction failed:', error);
+    }
+    try{
+      await createBetOrder(); 
       onSubmit(formData);
     } catch (error) {
       console.error('Transaction failed:', error);
-      toast.error('Failed to create bet order');
     }
-  }
 
   const handleAssetChange = (asset: string) => {
     setFormData({ ...formData, asset })
